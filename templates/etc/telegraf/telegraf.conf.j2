@@ -241,6 +241,7 @@
 #   debug = false
 
 
+{% if inventory_hostname in groups["output_to_kafka"] %}
 # # Configuration for the Kafka server to send metrics to
 # [[outputs.kafka]]
 #   ## URLs of kafka brokers
@@ -289,7 +290,7 @@
 #   ## more about them here:
 #   ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
 #   data_format = "influx"
-
+{% endif %}
 
 # # Configuration for the AWS Kinesis output.
 # [[outputs.kinesis]]
