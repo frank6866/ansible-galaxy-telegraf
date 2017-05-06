@@ -1,0 +1,14 @@
+---
+
+- name: create directory for cert releated files
+  file: path=/etc/pki/influxdb/private state=directory mode=755
+
+- name: copy cert file to telegraf
+  copy: src={{ telegraf_influxdb_cert_file_path }} dest=/etc/pki/influxdb/influxdb.crt
+
+- name: copy key file to telegraf
+  copy: src={{ telegraf_influxdb_key_file_path }} dest=/etc/pki/influxdb/private/influxdb.key
+
+- name: copy ca cert file to telegraf
+  copy: src={{ telegraf_influxdb_cacert_file_path }} dest=/etc/pki/influxdb/cacert.crt
+

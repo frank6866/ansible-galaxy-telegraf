@@ -85,7 +85,7 @@
   ## Multiple urls can be specified as part of the same cluster,
   ## this means that only ONE of the urls will be written to each interval.
   # urls = ["udp://localhost:8089"] # UDP endpoint example
-  urls = ["{{ telegraf_influxdb_api_url }}"] # required
+  urls = ["{{ telegraf_influxdb_api_url }}"]
   ## The target database for metrics (telegraf will create it if not exists).
   database = "telegraf" # required
 
@@ -99,6 +99,11 @@
   timeout = "5s"
   # username = "telegraf"
   # password = "metricsmetricsmetricsmetrics"
+{% if telegraf_influxdb_use_auth is defined and telegraf_influxdb_use_auth == "true" %}
+  username = "{{ telegraf_influxdb_username }}"
+  password = "{{ telegraf_influxdb_password }}"
+{% endif %}
+
   ## Set the user agent for HTTP POSTs (can be useful for log differentiation)
   # user_agent = "telegraf"
   ## Set UDP payload size, defaults to InfluxDB UDP Client default (512 bytes)
@@ -108,6 +113,12 @@
   # ssl_ca = "/etc/telegraf/ca.pem"
   # ssl_cert = "/etc/telegraf/cert.pem"
   # ssl_key = "/etc/telegraf/key.pem"
+{% if telegraf_influxdb_use_https is defined and telegraf_influxdb_use_https == "true" %}
+  ssl_ca = "/etc/pki/influxdb/cacert.crt"
+  ssl_cert = "/etc/pki/influxdb/influxdb.crt"
+  ssl_key = "/etc/pki/influxdb/private/influxdb.key"
+{% endif %}
+
   ## Use SSL but skip chain & host verification
   # insecure_skip_verify = false
 
@@ -241,7 +252,7 @@
 #   debug = false
 
 
-{% if inventory_hostname in groups["output_to_kafka"] %}
+{% if groups["output_to_kafka"] is defined and inventory_hostname in groups["output_to_kafka"] %}
 # # Configuration for the Kafka server to send metrics to
 # [[outputs.kafka]]
 #   ## URLs of kafka brokers
@@ -546,7 +557,7 @@
 #   ## server has configured and get stats for them.
 #   servers = ["localhost:3000"]
 
-{% if inventory_hostname in groups["apache"] %}
+{% if groups["apache"] is defined and inventory_hostname in groups["apache"] %}
 # # Read Apache status information (mod_status)
 [[inputs.apache]]
 #   ## An array of Apache status URI to gather stats.
@@ -597,7 +608,7 @@
 #   ]
 
 
-{% if inventory_hostname in groups["ceph"] %}
+{% if groups["ceph"] is defined and inventory_hostname in groups["ceph"] %}
 # Collects performance metrics from the MON and OSD nodes in a Ceph storage cluster.
 [[inputs.ceph]]
   ## This is the recommended interval to poll.  Too frequent and you will lose

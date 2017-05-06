@@ -5,6 +5,10 @@
   with_items:
     - telegraf
 
+- name: include https.yml
+  include: https.yml
+  when: telegraf_influxdb_use_https is defined and telegraf_influxdb_use_https == "true"
+
 - name: template /etc/telegraf/telegraf.conf
   template: src=etc/telegraf/telegraf.conf.j2
             dest=/etc/telegraf/telegraf.conf
@@ -15,3 +19,4 @@
   service: name={{ item }} state=started enabled=yes
   with_items:
     - telegraf
+
