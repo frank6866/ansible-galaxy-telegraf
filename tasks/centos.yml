@@ -1,5 +1,8 @@
 ---
 
+- name: copy influxdb yum repo file
+  copy: src=influxdata.repo dest=/etc/yum.repos.d/influxdata.repo
+
 - name: install telegraf related packages
   yum: name={{ item }} state=present
   with_items:
