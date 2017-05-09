@@ -2,5 +2,5 @@
 # handlers file for telegraf
 
 - name: restart telegraf
-  service: name=telegraf state=restarted
+  systemd: name=telegraf state=restarted daemon_reload=yes
 

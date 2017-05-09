@@ -6,6 +6,7 @@ This role is used to deploy Telegraf. Support features as foolows:
 * output to InfluxDB with auth or https
 * enable ceph monitor
 * enable mysql monitor
+* eanble docker monitor
 
 
 Prepare
@@ -27,6 +28,9 @@ vagrant1
 vagrant1
 
 [mysql]
+vagrant1
+
+[docker]
 vagrant1
 
 [telegraf:vars]

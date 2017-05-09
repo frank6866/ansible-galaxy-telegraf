@@ -1,0 +1,8 @@
+---
+
+- name: template /usr/lib/systemd/system/telegraf.service
+  template: src=usr/lib/systemd/system/telegraf.service.j2
+            dest=/usr/lib/systemd/system/telegraf.service
+            mode=644 backup=yes
+  notify: restart telegraf
+
