@@ -25,7 +25,7 @@
 # Configuration for telegraf agent
 [agent]
   ## Default data collection interval for all inputs
-  interval = "10s"
+  interval = "{{ telegraf_collect_interval }}s"
   ## Rounds collection interval to 'interval'
   ## ie, if interval="10s" then always collect on :00, :10, :20, etc.
   round_interval = true
@@ -560,22 +560,22 @@
 {% if groups["apache"] is defined and inventory_hostname in groups["apache"] %}
 # # Read Apache status information (mod_status)
 [[inputs.apache]]
-#   ## An array of Apache status URI to gather stats.
-#   ## Default is "http://localhost/server-status?auto".
-    urls = ["http://localhost/server-status?auto"]
-#   ## user credentials for basic HTTP authentication
-#   username = "myuser"
-#   password = "mypassword"
-#
-#   ## Timeout to the complete conection and reponse time in seconds
-#   response_timeout = "25s" ## default to 5 seconds
-#
-#   ## Optional SSL Config
-#   # ssl_ca = "/etc/telegraf/ca.pem"
-#   # ssl_cert = "/etc/telegraf/cert.pem"
-#   # ssl_key = "/etc/telegraf/key.pem"
-#   ## Use SSL but skip chain & host verification
-#   # insecure_skip_verify = false
+  ## An array of Apache status URI to gather stats.
+  ## Default is "http://localhost/server-status?auto".
+  urls = ["http://localhost/server-status?auto"]
+  ## user credentials for basic HTTP authentication
+  username = "myuser"
+  password = "mypassword"
+
+  ## Timeout to the complete conection and reponse time in seconds
+  response_timeout = "25s" ## default to 5 seconds
+
+  ## Optional SSL Config
+  # ssl_ca = "/etc/telegraf/ca.pem"
+  # ssl_cert = "/etc/telegraf/cert.pem"
+  # ssl_key = "/etc/telegraf/key.pem"
+  ## Use SSL but skip chain & host verification
+  # insecure_skip_verify = false
 {% endif %}
 
 # # Read metrics of bcache from stats_total and dirty_data
@@ -940,32 +940,32 @@
 #   ## socket, so both examples below are valid.
 #   ## servers = ["socket:/run/haproxy/admin.sock", "/run/haproxy/*.sock"]
 
+{% if groups["http_response"] is defined and inventory_hostname in groups["http_response"] %}
+# HTTP/HTTPS request given an address a method and a timeout
+[[inputs.http_response]]
+  ## Server address (default http://localhost)
+  address = "{{ http_response_address }}"
+  ## Set response_timeout (default 5 seconds)
+  response_timeout = "5s"
+  ## HTTP Request Method
+  method = "GET"
+  ## Whether to follow redirects from the server (defaults to false)
+  follow_redirects = true
+  ## HTTP Request Headers (all values must be strings)
+  # [inputs.http_response.headers]
+  #   Host = "github.com"
+  ## Optional HTTP Request Body
+  # body = '''
+  # {'fake':'data'}
+  # '''
 
-# # HTTP/HTTPS request given an address a method and a timeout
-# [[inputs.http_response]]
-#   ## Server address (default http://localhost)
-#   address = "http://github.com"
-#   ## Set response_timeout (default 5 seconds)
-#   response_timeout = "5s"
-#   ## HTTP Request Method
-#   method = "GET"
-#   ## Whether to follow redirects from the server (defaults to false)
-#   follow_redirects = true
-#   ## HTTP Request Headers (all values must be strings)
-#   # [inputs.http_response.headers]
-#   #   Host = "github.com"
-#   ## Optional HTTP Request Body
-#   # body = '''
-#   # {'fake':'data'}
-#   # '''
-#
-#   ## Optional SSL Config
-#   # ssl_ca = "/etc/telegraf/ca.pem"
-#   # ssl_cert = "/etc/telegraf/cert.pem"
-#   # ssl_key = "/etc/telegraf/key.pem"
-#   ## Use SSL but skip chain & host verification
+  ## Optional SSL Config
+  # ssl_ca = "/etc/telegraf/ca.pem"
+  # ssl_cert = "/etc/telegraf/cert.pem"
+  # ssl_key = "/etc/telegraf/key.pem"
+  ## Use SSL but skip chain & host verification
 #   # insecure_skip_verify = false
-
+{% endif %}
 
 # # Read flattened metrics from one or more JSON HTTP endpoints
 # [[inputs.httpjson]]

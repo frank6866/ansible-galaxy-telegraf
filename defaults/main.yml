@@ -1,6 +1,8 @@
 ---
 # defaults file for telegraf
 
+telegraf_collect_interval: 5
+
 telegraf_influxdb_database: "telegraf"
 
 

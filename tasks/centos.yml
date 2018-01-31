@@ -12,10 +12,11 @@
   include: https.yml
   when: telegraf_influxdb_use_https is defined and telegraf_influxdb_use_https == "true"
 
-- name: include docker.yml
-  include: docker.yml
-  when: groups["docker"] is defined and inventory_hostname in groups["docker"]
-
+- name: template /usr/lib/systemd/system/telegraf.service
+  template: src=usr/lib/systemd/system/telegraf.service.j2
+            dest=/usr/lib/systemd/system/telegraf.service
+            mode=644 backup=yes
+  notify: restart telegraf
 
 - name: template /etc/telegraf/telegraf.conf
   template: src=etc/telegraf/telegraf.conf.j2
