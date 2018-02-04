@@ -1009,22 +1009,22 @@
 #   ## Use SSL but skip chain & host verification
 #   # insecure_skip_verify = false
 
-
+{% if groups["influxdb"] is defined and inventory_hostname in groups["influxdb"] %}
 # # Read InfluxDB-formatted JSON metrics from one or more HTTP endpoints
-# [[inputs.influxdb]]
+[[inputs.influxdb]]
 #   ## Works with InfluxDB debug endpoints out of the box,
 #   ## but other services can use this format too.
 #   ## See the influxdb plugin's README for more details.
 #
 #   ## Multiple URLs from which to read InfluxDB-formatted JSON
 #   ## Default is "http://localhost:8086/debug/vars".
-#   urls = [
-#     "http://localhost:8086/debug/vars"
-#   ]
+  urls = [
+    "http://localhost:8086/debug/vars"
+  ]
 #
 #   ## http request & header timeout
-#   timeout = "5s"
-
+  timeout = "5s"
+{% endif %}
 
 # # Collect statistics about itself
 # [[inputs.internal]]
@@ -1294,12 +1294,12 @@
 # [[inputs.netstat]]
 #   # no configuration
 
-
+{% if groups["nginx"] is defined and inventory_hostname in groups["nginx"] %}
 # # Read Nginx's basic status information (ngx_http_stub_status_module)
-# [[inputs.nginx]]
-#   ## An array of Nginx stub_status URI to gather stats.
-#   urls = ["http://localhost/status"]
-
+ [[inputs.nginx]]
+   ## An array of Nginx stub_status URI to gather stats.
+   urls = ["http://localhost/status"]
+{% endif %}
 
 # # Read NSQ topic and channel statistics.
 # [[inputs.nsq]]
