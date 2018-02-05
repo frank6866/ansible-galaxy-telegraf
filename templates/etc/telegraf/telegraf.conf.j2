@@ -1800,15 +1800,16 @@
 #   # poolMetrics = false
 
 
+{% if groups["zookeeper"] is defined and inventory_hostname in groups["zookeeper"] %}
 # # Reads 'mntr' stats from one or many zookeeper servers
-# [[inputs.zookeeper]]
+[[inputs.zookeeper]]
 #   ## An array of address to gather stats about. Specify an ip or hostname
 #   ## with port. ie localhost:2181, 10.0.0.1:2181, etc.
 #
 #   ## If no servers are specified, then localhost is used as the host.
 #   ## If no port is specified, 2181 is used
-#   servers = [":2181"]
-
+  servers = ["localhost:2181"]
+{% endif %}
 
 
 ###############################################################################
@@ -1834,25 +1835,26 @@
 #   max_line_size = 0
 
 
-# # Read metrics from Kafka topic(s)
-# [[inputs.kafka_consumer]]
-#   ## topic(s) to consume
-#   topics = ["telegraf"]
-#   ## an array of Zookeeper connection strings
-#   zookeeper_peers = ["localhost:2181"]
-#   ## Zookeeper Chroot
-#   zookeeper_chroot = ""
-#   ## the name of the consumer group
-#   consumer_group = "telegraf_metrics_consumers"
-#   ## Offset (must be either "oldest" or "newest")
-#   offset = "oldest"
-#
-#   ## Data format to consume.
-#   ## Each data format has it's own unique set of configuration options, read
-#   ## more about them here:
-#   ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
-#   data_format = "influx"
+{% if groups["kafka"] is defined and inventory_hostname in groups["kafka"] %}
+# Read metrics from Kafka topic(s)
+[[inputs.kafka_consumer]]
+  ## topic(s) to consume
+  topics = ["telegraf"]
+  ## an array of Zookeeper connection strings
+  zookeeper_peers = ["localhost:2181"]
+  ## Zookeeper Chroot
+  zookeeper_chroot = "/"
+  ## the name of the consumer group
+  consumer_group = "telegraf_metrics_consumers"
+  ## Offset (must be either "oldest" or "newest")
+  offset = "oldest"
 
+  ## Data format to consume.
+  ## Each data format has it's own unique set of configuration options, read
+  ## more about them here:
+  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  data_format = "influx"
+{% endif %}
 
 # # Stream and parse log file(s).
 # [[inputs.logparser]]

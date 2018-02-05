@@ -29,3 +29,6 @@
   with_items:
     - telegraf
 
+- name: check if telegraf is running
+  shell: systemctl status telegraf | grep running
+
