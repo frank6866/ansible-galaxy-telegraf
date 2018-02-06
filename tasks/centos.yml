@@ -24,6 +24,12 @@
             mode=644 backup=yes
   notify: restart telegraf
 
+- name: template /etc/telegraf/telegraf.d/sysstat.conf
+  template: src=etc/telegraf/telegraf.d/sysstat.conf.j2
+            dest=/etc/telegraf/telegraf.d/sysstat.conf
+            mode=644 backup=yes
+  notify: restart telegraf
+
 - name: start and enable telegraf
   service: name={{ item }} state=started enabled=yes
   with_items:
